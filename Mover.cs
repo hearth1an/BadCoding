@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent (typeof(Transform))]
-public class GoPlaces : MonoBehaviour
+public class Mover : MonoBehaviour
 {
     private Transform _placePoint;
     private Transform[] _places;
@@ -9,15 +9,15 @@ public class GoPlaces : MonoBehaviour
     private float _speed;
     private int _currentPlaceIndex;
 
-    private int _placePointChildCount => _placePoint.childCount;
+    private int PlacePointChildCount => _placePoint.childCount;
 
     private void Start()
     {
-        _places = new Transform[_placePointChildCount];
+        _places = new Transform[PlacePointChildCount];
 
-        for (int i = 0; i < _placePointChildCount; i++)
+        for (int i = 0; i < PlacePointChildCount; i++)
         {
-            _places[i] = _placePoint.GetChild(i).GetComponent<Transform>();
+            _places[i] = _placePoint.GetChild(i);
         }            
     }
 
@@ -28,10 +28,10 @@ public class GoPlaces : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, pointNumber.position, _speed * Time.deltaTime);
 
         if (transform.position == pointNumber.position)
-            GetNextPlace();
+            ChooseNextPlace();
     }
 
-    private Vector3 GetNextPlace()
+    private void ChooseNextPlace()
     {
         int minPlaceIndex = 0;
         Vector3 pointVector = _places[_currentPlaceIndex].transform.position;
@@ -42,7 +42,5 @@ public class GoPlaces : MonoBehaviour
             _currentPlaceIndex = minPlaceIndex;
         
         transform.forward = pointVector - transform.position;
-
-        return pointVector;
     }
 }
