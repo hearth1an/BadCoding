@@ -3,13 +3,14 @@ using UnityEngine;
 [RequireComponent (typeof(Transform))]
 public class Mover : MonoBehaviour
 {
-    private Transform _placePoint;
-    private Transform[] _places;
+    [SerializeField] private Transform _placePoint;
+    [SerializeField] private float _speed;
 
-    private float _speed;
+    private Transform[] _places;
+    
     private int _currentPlaceIndex;
 
-    private int PlacePointChildCount => _placePoint.childCount;
+    public int PlacePointChildCount => _placePoint.childCount;
 
     private void Start()
     {
@@ -28,10 +29,10 @@ public class Mover : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, pointNumber.position, _speed * Time.deltaTime);
 
         if (transform.position == pointNumber.position)
-            ChooseNextPlace();
+            ChooseNextPlaceAndRotate();
     }
 
-    private void ChooseNextPlace()
+    private void ChooseNextPlaceAndRotate()
     {
         int minPlaceIndex = 0;
         Vector3 pointVector = _places[_currentPlaceIndex].transform.position;
@@ -43,4 +44,6 @@ public class Mover : MonoBehaviour
         
         transform.forward = pointVector - transform.position;
     }
+
+
 }
